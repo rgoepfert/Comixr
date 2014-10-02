@@ -1,12 +1,15 @@
 
 // Data and done callbacks
+var currentURL = null;
+
 var dataCallback = function(data) {
   var divPic = document.getElementById("pic");
   for (var i = 0; i < data.length; i++) {
     var d = data[i];
 	for (var k in d.data) {
 		if (/^http/.test(d.data[k])) {
-		divPic.innerHTML += ("This comic taken from: " + d.data[k] + "<br>");
+		divPic.innerHTML += ("This comic taken from: " + "<a href='" + currentURL + "'>" + currentURL + 
+				"</a>" /*d.data[k]*/ + "<br>");
 	   	divPic.innerHTML += ("<img src=\"" + d.data[k] + "\"/><br><br>");
 	   	//divPic.innerHTML += ("<button onclick='javascript:removeComic("+i+");''>Remove</button><br><br>");
 	   }
@@ -59,6 +62,7 @@ function pageLoad() {
 		for(var i=0; i<Number(localStorage.getItem("index")); i++) {
 			if (localStorage.getItem(i) == null)
 				continue;
+			currentURL = localStorage.getItem(i);
 			doQuery(read(i));
 			document.getElementById("pic").innerHTML += ("<button onclick='javascript:removeComic("+i+");''>Remove "+read(i)+"</button><br><br>");
 			console.log(i);
