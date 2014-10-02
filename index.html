@@ -3,7 +3,19 @@
 	<head>
 		<title>Comixr: All Your Favorites in One Place</title>
 		<link rel="stylesheet" href="style.css">
-
+		<script LANGUAGE="JavaScript" src="main_script.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="https://cdn.import.io/js/2.0.0/importio.js"></script> <!--Client Library -->
+		<!-- 2. Configure the library -->
+		<script type="text/javascript">
+		    importio.init({
+		      "auth": {
+		        "userGuid": "79616877-daea-4c2e-a3c8-db7e9051cb44",
+		        "apiKey": "vNbhgNzzDF7ocBq3qRLv2ZEoXE4QlBp2TB5G0BbTZ4MF9QZSVO/MlCgpFPtJDYDhg8HliCdrwQ4amOr6XW9mHA=="
+		      },
+		      "host": "import.io"
+		    });
+		 </script>
 		<!-- TODO 
 			Get rid of this shortcut icon and replace, it would infringe on copyrights, make own
 		-->
@@ -28,7 +40,6 @@
 		</menu>
 	</div>
 
-	<script src="comixr_script.js"></script>
 	<font color="white">Enter a URL here to track another webcomic</font> 
 	<input type="text" id="newURL" onkeypress="if (event.keyCode == 13) document.getElementById('add').click();"></input>
 	<button id="add" onclick="javascript:store(newURL);">Add</button><br><br>
@@ -38,117 +49,6 @@
 	</div>
 </body>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<!-- 1. Include the client library -->
-  <script src="https://cdn.import.io/js/2.0.0/importio.js"></script>
-
-<!-- 2. Configure the library -->
-  <script type="text/javascript">
-    importio.init({
-      "auth": {
-        "userGuid": "79616877-daea-4c2e-a3c8-db7e9051cb44",
-        "apiKey": "vNbhgNzzDF7ocBq3qRLv2ZEoXE4QlBp2TB5G0BbTZ4MF9QZSVO/MlCgpFPtJDYDhg8HliCdrwQ4amOr6XW9mHA=="
-      },
-      "host": "import.io"
-    });
-    // Data and done callbacks
-    var dataCallback = function(data) {
-      var divPic = document.getElementById("pic");
-      for (var i = 0; i < data.length; i++) {
-	    var d = data[i];
-		for (var k in d.data) {
-			if (/^http/.test(d.data[k])) {
-			divPic.innerHTML += ("This comic taken from: " + d.data[k] + "<br>");
-		   	divPic.innerHTML += ("<img src=\"" + d.data[k] + "\"/><br><br>");
-		   	//divPic.innerHTML += ("<button onclick='javascript:removeComic("+i+");''>Remove</button><br><br>");
-		   }
-		}
-	  }
-    }
-
-// 3. Do the query (when the function is called)
-    var doQuery = function(url) {
-      // Query for tile Comixr
-     importio.query({
-        "connectorGuids": [
-          "eaac5815-2a4d-477f-aa40-77be5e3a541b"
-        ],
-        "input": {
-          "webpage/url": "" + url
-        }
-      }, { "data": dataCallback });
-    }
-  </script>
-
-<script>
-
-function store(url) //stores the inputted url
-{
-   	 localStorage.setItem(Number(localStorage.getItem("index")), url.value);
-   	 localStorage.setItem("index", String(Number(localStorage.getItem("index"))+1));
-   	 location.reload();
-}
-
-function read(i) //returns a stored url given it's index number
-{
-  	  return localStorage.getItem(i);
-}
-
-function clearLocal() //clears the localStorage
-{
-	localStorage.clear();
-	location.reload();
-}
-
-function removeComic(i)
-{
-	localStorage.removeItem(i);
-	location.reload();
-}
-
-</script>
-
-<script>
-function pageLoad() {
-	if (localStorage.getItem("index")==null) {
-		localStorage.setItem("index", "0");
-	}
-	else {
-		for(var i=0; i<Number(localStorage.getItem("index")); i++) {
-			if (localStorage.getItem(i) == null)
-				continue;
-			doQuery(read(i));
-			document.getElementById("pic").innerHTML += ("<button onclick='javascript:removeComic("+i+");''>Remove "+read(i)+"</button><br><br>");
-			console.log(i);
-		}
-	}
-}
-
-window.onload = pageLoad;
-</script>
-
-<script>
-
-
-/*Old code, replaced by other methods
-
-var i = 0;
-for (var j = 0; j < i; j++) {
-	doQuery(localStorage.getElementById("0");
-}
-function addURL(url) {
-	localStorage.setItem(i, url);
-	i++;
-	location.reload();
-};
-
-/*var cookies = document.cookie.split(';');
-var i = 0;
-while (hasNext(cookies, i)) {
-	i = (i + 3) % 3
-	doQuery(cookies[i]);
-}*/
-</script>
 
 
 
